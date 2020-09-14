@@ -1,0 +1,101 @@
+body {
+	background-color: #222;
+	color: #DDD;
+	text-align: center;
+	padding-top: 20px;
+}
+
+#logo {
+	width: 300px;
+}
+
+#title {
+	margin: 20px auto;
+	color: #BFA684;
+}
+
+#description {
+	margin: 0 auto;
+	width: 400px;
+}
+
+#description ol {
+	text-align: left;
+}
+
+form {
+	margin: 0 auto;
+	padding-top: 5px;
+	width: 400px;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+#file-container {
+	position: relative;
+	width: 390px;
+	height: 150px;
+	margin-bottom: 20px;
+	border: 4px dashed #FFF;
+}
+
+#file-container p {
+	text-align: center;
+	line-height: 120px;
+}
+
+#file-container input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	outline: none;
+	opacity: 0;
+}
+
+.selectdiv {
+	position: relative;
+	width: 100%;
+}
+
+select::-ms-expand {
+	display: none;
+}
+
+.selectdiv:after {
+	content: '<>';
+	font: 17px "Consolas", monospace;
+	color: #333;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	transform: rotate(90deg);
+	right: 11px;
+	top: 18px;
+	padding: 0 0 2px;
+	border-bottom: 1px solid #999;
+	position: absolute;
+	pointer-events: none;
+}
+
+.selectdiv select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	display: block;
+	width: 100%;
+	height: 50px;
+	float: right;
+	margin: 5px 0px 20px;
+	padding: 0px 24px;
+	font-size: 16px;
+	line-height: 1.75;
+	color: #333;
+	background-color: #ffffff;
+	background-image: none;
+	border: 1px solid #cccccc;
+	-ms-word-break: normal;
+	word-break: normal;
+	border-radius: 8px;
+}
