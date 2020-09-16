@@ -1,8 +1,8 @@
 <?php
 require(__DIR__ . '/../lib/ReplaysZipBuilder.php');
 
-if(!$_POST) exit('No request received');
-if(!$_FILES) exit('No files sent');
+if(!isset($_POST) or !$_POST) exit('No request received');
+if(!isset($_FILES) or !$_FILES) exit('No files sent');
 
 $class = new ReplaysZipBuilder($_FILES['replays'], $_POST['bestOf']);
 $class->build();
