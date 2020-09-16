@@ -10,13 +10,12 @@ class ReplaysZipBuilder
 	protected $storageLocation;
 	protected $zipFilename;
 
-	public function __construct()
+	public function __construct($replayFiles, $bestOf = 3)
 	{
-		$this->checkFilesExistence();
-		$this->checkFilesType();
+		$this->checkFilesType($replayFiles);
 		
-		$this->replays = $_FILES['replays']['tmp_name'];
-		$this->bestOf = $_POST['bestOf'];
+		$this->replays = $replayFiles['tmp_name'];
+		$this->bestOf = $bestOf;
 		
 		$this->playersNamesSeparator = ' vs ';
 		$this->storageLocation = '../storage/';
@@ -135,14 +134,9 @@ class ReplaysZipBuilder
 		readfile($this->getFullZipFilename());
 	}
 	
-	private function checkFilesExistence()
+	private function checkFilesType($replayFiles)
 	{
-		if(!$_FILES) exit('No files sent');
-	}
-	
-	private function checkFilesType()
-	{
-		if(array_diff(array_unique($_FILES['replays']['type']), ['text/xml'])) exit('Only XML files are accepted');
+		if(array_diff(array_unique($replayFiles['type']), ['text/xml'])) exit('Only XML files are accepted');
 	}
 	
 	private function numberFile($numbering)
