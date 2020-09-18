@@ -99,9 +99,9 @@ class ReplaysZipBuilder
 	
 	protected function addDummyFiles()
 	{
-		$countDummies = $this->bestOf - count($this->replaysData);
+		$dummiesTotal = $this->bestOf - count($this->replaysData);
 		
-		for($i = 0; $i < $countDummies; $i++) {
+		for($i = 0; $i < $dummiesTotal; $i++) {
 			$data = [];
 			$data['filename'] = $this->storageLocation . 'dummy.xml';
 			$data['playersNames'] = $this->getPlayersNames();
