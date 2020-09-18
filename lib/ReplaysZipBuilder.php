@@ -112,12 +112,11 @@ class ReplaysZipBuilder
 	
 	protected function createZipFile()
 	{
-		$numbering = '01';
-
 		$zip = new ZipArchive;
+		
 		if($zip->open($this->getFullZipFilename(), ZipArchive::CREATE)) {
 			foreach($this->replaysData as $data) {
-				$filename = $this->getBaseFilename() . ' ' . $this->numberFile($numbering++) . '.xml';
+				$filename = $this->getBaseFilename() . ' ' . $this->numberFile() . '.xml';
 				
 				$zip->addFromString($filename, file_get_contents($data['filename']));
 			}
@@ -139,8 +138,10 @@ class ReplaysZipBuilder
 		if(array_diff(array_unique($replayFiles['type']), ['text/xml'])) exit('Only XML files are accepted');
 	}
 	
-	private function numberFile($numbering)
+	private function numberFile()
 	{
-		return str_pad($numbering, 2, '0', STR_PAD_LEFT);
+		static $numbering = 1;
+		
+		return str_pad($numbering++, 2, '0', STR_PAD_LEFT);
 	}
 }
