@@ -102,11 +102,10 @@ class ReplaysZipBuilder
 		$dummiesTotal = $this->bestOf - count($this->replaysData);
 		
 		for($i = 0; $i < $dummiesTotal; $i++) {
-			$data = [];
-			$data['filename'] = $this->storageLocation . 'dummy.xml';
-			$data['playersNames'] = $this->getPlayersNames();
-			
-			$this->replaysData[] = $data;
+			$this->replaysData[] = [
+				'filename' => $this->storageLocation . 'dummy.xml',
+				'playersNames' => $this->getPlayersNames()
+			];
 		}
 	}
 	
