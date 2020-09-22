@@ -207,7 +207,7 @@
   <OriginalDate>637352778811745000</OriginalDate>
   <Players>
     <Player>
-      <Identity Name="mocaccino" Slot="4" Id="196307621025351620" />
+      <Identity Name="Player 1" Slot="4" Id="196307621025351620" />
       <IsBot>false</IsBot>
       <Observer>false</Observer>
       <Deck>
@@ -229,7 +229,7 @@
       <PlayerPlatform>Unknown</PlayerPlatform>
     </Player>
     <Player>
-      <Identity Name="[PS1]James?" Slot="4" Id="194971152591276470" />
+      <Identity Name="Player 2" Slot="4" Id="194971152591276470" />
       <IsBot>false</IsBot>
       <Observer>false</Observer>
       <Deck>
