@@ -19,7 +19,7 @@ class ReplaysZipBuilder
 		
 		$this->playersNamesSeparator = ' vs ';
 		$this->storageLocation = '../storage/';
-		
+
 		$this->setPlayersNames();
 		$this->setBaseFilename();
 		$this->setZipFilename();
@@ -76,12 +76,12 @@ class ReplaysZipBuilder
 	{
 		foreach($this->replays as $replay) {
 			$xml = simplexml_load_file($replay);
-		
+			
 			$data = [];
-			$data['filename'] = $replay;
+			$data['content'] = file_get_contents($replay);
 			$data['timestamp'] = $xml->OriginalDate;
 			$data['playersNames'] = [];
-
+			
 			foreach($xml->Players->Player as $player) {
 				$data['playersNames'][] = $player->Identity['Name'];
 			}
@@ -103,10 +103,26 @@ class ReplaysZipBuilder
 		
 		for($i = 0; $i < $dummiesTotal; $i++) {
 			$this->replaysData[] = [
-				'filename' => $this->storageLocation . 'dummy.xml',
+				'content' => $this->createDummyContent(),
 				'playersNames' => $this->getPlayersNames()
 			];
 		}
+	}
+	
+	protected function createDummyContent()
+	{
+		$xml = simplexml_load_file($this->storageLocation . 'dummy.xml');
+		
+		$totalGameEvents = rand(0, 20000);
+
+		for($i = 0; $i < $totalGameEvents; $i++) {
+			$gameEvent = $xml->GameEvents->addChild('g');
+			$gameEvent->addAttribute('e', 'Build');
+			$gameEvent->addAttribute('t', '1');
+			$gameEvent->addAttribute('d', 'structure_farm');
+		}
+
+		return $xml->asXML();
 	}
 	
 	protected function createZipFile()
@@ -117,7 +133,7 @@ class ReplaysZipBuilder
 			foreach($this->replaysData as $data) {
 				$filename = $this->getBaseFilename() . ' ' . $this->numberFile() . '.xml';
 				
-				$zip->addFromString($filename, file_get_contents($data['filename']));
+				$zip->addFromString($filename, $data['content']);
 			}
 			$zip->close();
 		}
