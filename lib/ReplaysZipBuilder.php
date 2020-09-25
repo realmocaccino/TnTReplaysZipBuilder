@@ -5,18 +5,16 @@ class ReplaysZipBuilder
 	protected $bestOf;
 	protected $playersNames = [];
 	protected $playersNamesSeparator;
-	protected $replays;
+	protected $replaysFiles;
 	protected $replaysData = [];
 	protected $storageLocation;
 	protected $zipFilename;
 
-	public function __construct(array $replayFiles, int $bestOf = 3)
+	public function __construct(array $replaysFiles, int $bestOf = 3)
 	{
-		$this->checkFilesType($replayFiles);
-		
-		$this->replays = $replayFiles['tmp_name'];
+		$this->replaysFiles = $replaysFiles;
 		$this->bestOf = $bestOf;
-		
+
 		$this->playersNamesSeparator = ' vs ';
 		$this->storageLocation = '../storage/';
 
@@ -40,7 +38,7 @@ class ReplaysZipBuilder
 	
 	protected function setPlayersNames(): void
 	{
-		$xml = simplexml_load_file($this->replays[0]);
+		$xml = simplexml_load_file($this->replaysFiles[0]);
 		
 		foreach($xml->Players->Player as $player) {
 			$this->playersNames[] = $player->Identity['Name'];
@@ -74,11 +72,11 @@ class ReplaysZipBuilder
 	
 	protected function setReplaysData(): void
 	{
-		foreach($this->replays as $replay) {
-			$xml = simplexml_load_file($replay);
+		foreach($this->replaysFiles as $replayFile) {
+			$xml = simplexml_load_file($replayFile);
 			
 			$data = [];
-			$data['content'] = file_get_contents($replay);
+			$data['content'] = file_get_contents($replayFile);
 			$data['timestamp'] = $xml->OriginalDate;
 			$data['playersNames'] = [];
 			
@@ -146,11 +144,6 @@ class ReplaysZipBuilder
 		header('Content-Disposition: attachment; filename=' . $this->getZipFilename());
 		
 		readfile($this->getFullZipFilename());
-	}
-	
-	private function checkFilesType(array $replayFiles): void
-	{
-		if(array_diff(array_unique($replayFiles['type']), ['text/xml'])) exit('Only XML files are accepted');
 	}
 	
 	private function numberFile(): string
