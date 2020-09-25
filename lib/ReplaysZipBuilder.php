@@ -10,7 +10,7 @@ class ReplaysZipBuilder
 	protected $storageLocation;
 	protected $zipFilename;
 
-	public function __construct($replayFiles, $bestOf = 3)
+	public function __construct(array $replayFiles, int $bestOf = 3)
 	{
 		$this->checkFilesType($replayFiles);
 		
@@ -26,19 +26,19 @@ class ReplaysZipBuilder
 		$this->setReplaysData();
 	}
 	
-	public function build()
+	public function build(): void
 	{
 		$this->orderReplaysData();
 		$this->addDummyFiles();
 		$this->createZipFile();
 	}
 	
-	protected function getPlayersNames()
+	protected function getPlayersNames(): array
 	{
 		return $this->playersNames;
 	}
 	
-	protected function setPlayersNames()
+	protected function setPlayersNames(): void
 	{
 		$xml = simplexml_load_file($this->replays[0]);
 		
@@ -47,32 +47,32 @@ class ReplaysZipBuilder
 		}
 	}
 	
-	protected function getBaseFilename()
+	protected function getBaseFilename(): string
 	{
 		return $this->baseFilename;
 	}
 	
-	protected function setBaseFilename()
+	protected function setBaseFilename(): void
 	{
 		$this->baseFilename = implode($this->playersNamesSeparator, $this->getPlayersNames());
 	}
 	
-	protected function getZipFilename()
+	protected function getZipFilename(): string
 	{
 		return $this->zipFilename;
 	}
 	
-	protected function getFullZipFilename()
+	protected function getFullZipFilename(): string
 	{
 		return $this->storageLocation . $this->zipFilename;
 	}
 	
-	protected function setZipFilename()
+	protected function setZipFilename(): void
 	{
 		$this->zipFilename = $this->getBaseFilename() . '.zip';
 	}
 	
-	protected function setReplaysData()
+	protected function setReplaysData(): void
 	{
 		foreach($this->replays as $replay) {
 			$xml = simplexml_load_file($replay);
@@ -90,14 +90,14 @@ class ReplaysZipBuilder
 		}
 	}
 	
-	protected function orderReplaysData()
+	protected function orderReplaysData(): void
 	{
 		usort($this->replaysData, function($a, $b) {
 			return $a['timestamp'] - $b['timestamp'];
 		});
 	}
 	
-	protected function addDummyFiles()
+	protected function addDummyFiles(): void
 	{
 		$dummiesTotal = $this->bestOf - count($this->replaysData);
 		
@@ -109,7 +109,7 @@ class ReplaysZipBuilder
 		}
 	}
 	
-	protected function createDummyContent()
+	protected function createDummyContent(): string
 	{
 		$xml = simplexml_load_file($this->storageLocation . 'dummy.xml');
 		
@@ -125,7 +125,7 @@ class ReplaysZipBuilder
 		return $xml->asXML();
 	}
 	
-	protected function createZipFile()
+	protected function createZipFile(): void
 	{
 		$zip = new ZipArchive;
 		
@@ -139,7 +139,7 @@ class ReplaysZipBuilder
 		}
 	}
 	
-	public function downloadZipFile()
+	public function downloadZipFile(): void
 	{
 		header('Content-Type: application/zip');
 		header('Pragma: no-cache');
@@ -148,12 +148,12 @@ class ReplaysZipBuilder
 		readfile($this->getFullZipFilename());
 	}
 	
-	private function checkFilesType($replayFiles)
+	private function checkFilesType(array $replayFiles): void
 	{
 		if(array_diff(array_unique($replayFiles['type']), ['text/xml'])) exit('Only XML files are accepted');
 	}
 	
-	private function numberFile()
+	private function numberFile(): string
 	{
 		static $numbering = 1;
 		
