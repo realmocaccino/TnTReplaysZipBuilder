@@ -1,14 +1,14 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Replays Zip Builder - Tooth and Tail</title>
+		<title>Replay Zipping Tool - Tooth and Tail</title>
 		<link href="public/css/styles.css" rel="stylesheet">
 		<link href="public/css/pushy-buttons.min.css" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<body>
 		<img id="logo" src="public/img/tnt-logo.png" alt="Tooth and Tail logo">
-		<h1 id="title">Replays Zip Builder</h1>
+		<h1 id="title">Replay Zipping Tool</h1>
 		<div id="description">
 			<p>Select the replays of the series you just played and we take care of the rest:</p>
 			<ol>
