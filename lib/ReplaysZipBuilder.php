@@ -2,7 +2,8 @@
 class ReplaysZipBuilder
 {
 	protected $baseFilename;
-	protected $playersNames = [];
+	protected $bestOf;
+	protected $players = [];
 	protected $playersNamesSeparator;
 	protected $replaysFiles;
 	protected $replaysData = [];
