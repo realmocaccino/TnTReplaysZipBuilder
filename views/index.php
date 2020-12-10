@@ -23,14 +23,6 @@
 				<input type="file" name="replays[]" accept="text/xml" multiple="multiple" required="required">
 				<p>Drag your files here or click in this area</p>
 			</div>
-			<div class="selectdiv">
-				<select name="bestOf">
-					<option value="3">Best of 3</option>
-					<option value="5">Best of 5</option>
-					<option value="7">Best of 7</option>
-					<option value="9">Best of 9</option>
-				</select>
-			</div>
 			<p><input type="submit" value="Create" id="button" class="pushy__btn pushy__btn--lg pushy__btn--blue"></p>
 		</form>
 		<script>

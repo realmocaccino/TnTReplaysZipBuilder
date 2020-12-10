@@ -2,7 +2,6 @@
 class ReplaysZipBuilder
 {
 	protected $baseFilename;
-	protected $bestOf;
 	protected $playersNames = [];
 	protected $playersNamesSeparator;
 	protected $replaysFiles;
@@ -10,18 +9,18 @@ class ReplaysZipBuilder
 	protected $storageLocation;
 	protected $zipFilename;
 
-	public function __construct(array $replaysFiles, int $bestOf = 3)
+	public function __construct(array $replaysFiles)
 	{
 		$this->replaysFiles = $replaysFiles;
-		$this->bestOf = $bestOf;
 
 		$this->playersNamesSeparator = ' vs ';
 		$this->storageLocation = '../storage/';
 
-		$this->setPlayersNames();
+		$this->setPlayers();
 		$this->setBaseFilename();
 		$this->setZipFilename();
 		$this->setReplaysData();
+		$this->setBestOf();
 	}
 	
 	public function build(): void
@@ -31,18 +30,33 @@ class ReplaysZipBuilder
 		$this->createZipFile();
 	}
 	
-	protected function getPlayersNames(): array
+	protected function getPlayers(): array
 	{
-		return $this->playersNames;
+		return $this->players;
 	}
 	
-	protected function setPlayersNames(): void
+	protected function setPlayers(): void
 	{
 		$xml = simplexml_load_file($this->replaysFiles[0]);
 		
 		foreach($xml->Players->Player as $player) {
-			$this->playersNames[] = $player->Identity['Name'];
+			$this->players[(string) $player->ArmyIndex] = [
+				'name' => $player->Identity['Name'],
+				'score' => 0
+			];
 		}
+	}
+	
+	protected function getBestOf(): string
+	{
+		return $this->bestOf;
+	}
+	
+	protected function setBestOf(): void
+	{
+		$winnerScore = max(array_column($this->players, 'score'));
+
+		$this->bestOf = ($winnerScore * 2) - 1;
 	}
 	
 	protected function getBaseFilename(): string
@@ -52,7 +66,7 @@ class ReplaysZipBuilder
 	
 	protected function setBaseFilename(): void
 	{
-		$this->baseFilename = implode($this->playersNamesSeparator, $this->getPlayersNames());
+		$this->baseFilename = implode($this->playersNamesSeparator, array_column($this->getPlayers(), 'name'));
 	}
 	
 	protected function getZipFilename(): string
@@ -80,7 +94,14 @@ class ReplaysZipBuilder
 			$data['timestamp'] = $xml->OriginalDate;
 			
 			$this->replaysData[] = $data;
+			
+			$this->incrementPlayerScore((string) $xml->Results->WinningTeam);
 		}
+	}
+	
+	protected function incrementPlayerScore(string $playerIndex): void
+	{
+		$this->players[$playerIndex]['score']++;
 	}
 	
 	protected function orderReplaysData(): void
@@ -92,7 +113,7 @@ class ReplaysZipBuilder
 	
 	protected function addDummyFiles(): void
 	{
-		$dummiesTotal = $this->bestOf - count($this->replaysData);
+		$dummiesTotal = $this->getBestOf() - count($this->replaysData);
 		
 		for($i = 0; $i < $dummiesTotal; $i++) {
 			$this->replaysData[] = [
