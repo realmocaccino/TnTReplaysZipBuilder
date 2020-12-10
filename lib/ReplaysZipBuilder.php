@@ -78,11 +78,6 @@ class ReplaysZipBuilder
 			$data = [];
 			$data['content'] = file_get_contents($replayFile);
 			$data['timestamp'] = $xml->OriginalDate;
-			$data['playersNames'] = [];
-			
-			foreach($xml->Players->Player as $player) {
-				$data['playersNames'][] = $player->Identity['Name'];
-			}
 			
 			$this->replaysData[] = $data;
 		}
@@ -101,8 +96,7 @@ class ReplaysZipBuilder
 		
 		for($i = 0; $i < $dummiesTotal; $i++) {
 			$this->replaysData[] = [
-				'content' => $this->createDummyContent(),
-				'playersNames' => $this->getPlayersNames()
+				'content' => $this->createDummyContent()
 			];
 		}
 	}
